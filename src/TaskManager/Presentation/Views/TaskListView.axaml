@@ -1,0 +1,41 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:suki="https://github.com/kikipoulet/SukiUI"
+             xmlns:p="clr-namespace:TaskManager.Properties"
+             xmlns:viewModels="clr-namespace:TaskManager.Presentation.ViewModels"
+             xmlns:views="clr-namespace:TaskManager.Presentation.Views"
+             mc:Ignorable="d" d:DesignWidth="420" d:DesignHeight="600"
+             x:Class="TaskManager.Presentation.Views.TaskListView"
+             x:DataType="viewModels:TaskListViewModel"
+             x:Name="View">
+    <suki:BusyArea IsBusy="{CompiledBinding LoadTasks.IsExecuting^}"
+                   BusyText="{x:Static p:Resources.TaskListView_Loading}">
+        <DockPanel Margin="20"
+                   HorizontalAlignment="Center"
+                   Width="500">
+            <TextBlock DockPanel.Dock="Top"
+                       HorizontalAlignment="Center"
+                       Text="{x:Static p:Resources.TaskListView_Tasks}"
+                       Classes="h2" />
+
+            <DockPanel DockPanel.Dock="Bottom">
+                <Button DockPanel.Dock="Right"
+                        Margin="8,0,0,0"
+                        Content="+"
+                        Command="{CompiledBinding AddTask}">
+                </Button>
+                <TextBox Text="{CompiledBinding NewTaskName}"
+                         Watermark="{x:Static p:Resources.TaskListView_AddTask_Placeholder}">
+                    <TextBox.KeyBindings>
+                        <KeyBinding Gesture="Enter"
+                                    Command="{CompiledBinding AddTask}" />
+                    </TextBox.KeyBindings>
+                </TextBox>
+            </DockPanel>
+
+            <views:TaskGridControl/>
+        </DockPanel>
+    </suki:BusyArea>
+</UserControl>

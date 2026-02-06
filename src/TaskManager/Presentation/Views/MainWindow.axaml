@@ -1,0 +1,22 @@
+<suki:SukiWindow xmlns="https://github.com/avaloniaui"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:suki="https://github.com/kikipoulet/SukiUI"
+                 xmlns:vm="clr-namespace:TaskManager.Presentation.ViewModels"
+                 mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="500"
+                 x:Class="TaskManager.Presentation.Views.MainWindow"
+                 x:DataType="vm:MainWindowViewModel"
+                 x:Name="View"
+                 Icon="/Assets/avalonia-logo.ico"
+                 Title="TaskManager"
+                 d:DataContext="{x:Type vm:MainWindowViewModel}"
+                 Width="500"
+                 Height="500">
+
+    <suki:SukiWindow.Hosts>
+        <suki:SukiToastHost Manager="{CompiledBinding ToastManager}" />
+    </suki:SukiWindow.Hosts>
+
+    <ContentControl Content="{CompiledBinding Content}"/>
+</suki:SukiWindow>

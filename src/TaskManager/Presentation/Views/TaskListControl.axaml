@@ -1,0 +1,39 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:p="clr-namespace:TaskManager.Properties"
+             xmlns:models="clr-namespace:TaskManager.Models"
+             xmlns:viewModels="clr-namespace:TaskManager.Presentation.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="TaskManager.Presentation.Views.TaskListControl"
+             x:DataType="viewModels:TaskListViewModel"
+             x:Name="Control">
+    <ScrollViewer Margin="0,4"
+                  VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
+        <ItemsControl ItemsSource="{CompiledBinding Tasks}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="models:TaskItem">
+                    <DockPanel Margin="0,2">
+                        <CheckBox DockPanel.Dock="Left"
+                                  IsChecked="{CompiledBinding IsCompleted}"
+                                  VerticalAlignment="Center"
+                                  Command="{Binding #Control.DataContext.ToggleTaskCompleted}"
+                                  CommandParameter="{CompiledBinding}" />
+                        <Button DockPanel.Dock="Right"
+                                Content="{x:Static p:Resources.TaskListView_DeleteTask}"
+                                Command="{Binding #Control.DataContext.DeleteTask}"
+                                CommandParameter="{CompiledBinding}"
+                                VerticalAlignment="Center" />
+                        <TextBlock Margin="4,0"
+                                   Text="{CompiledBinding Title}"
+                                   Classes="h3"
+                                   VerticalAlignment="Center"
+                                   MaxWidth="300" />
+                    </DockPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </ScrollViewer>
+</UserControl>
