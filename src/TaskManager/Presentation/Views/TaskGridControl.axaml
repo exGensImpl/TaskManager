@@ -12,7 +12,17 @@
               AutoGenerateColumns="False"
               GridLinesVisibility="None">
         <DataGrid.Columns>
-            <DataGridCheckBoxColumn Binding="{Binding IsCompleted}" />
+            <DataGridTemplateColumn>
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <CheckBox DockPanel.Dock="Left"
+                                  IsChecked="{CompiledBinding IsCompleted}"
+                                  VerticalAlignment="Center"
+                                  Command="{Binding #Control.DataContext.ToggleTaskCompleted}"
+                                  CommandParameter="{CompiledBinding}" />
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
             <DataGridTextColumn Binding="{Binding Title}" 
                                 Header="{x:Static p:Resources.TaskGridView_Title}" 
                                 IsReadOnly="True" />

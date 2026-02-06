@@ -3,11 +3,21 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:TaskManager.Presentation.ViewModels"
+             xmlns:suki="https://github.com/kikipoulet/SukiUI"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="TaskManager.Presentation.Views.ConnectionView"
              x:DataType="viewModels:ConnectionViewModel">
-    <TextBlock Text="{CompiledBinding State}"
-               Classes="h2"
-               VerticalAlignment="Center"
-               HorizontalAlignment="Center"/>
+    <Grid>
+        <suki:BusyArea IsBusy="{CompiledBinding Connect.IsExecuting^}"
+                       BusyText="{CompiledBinding State}" 
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"/>
+        <TextBlock IsVisible="{CompiledBinding !Connect.IsExecuting^}"
+                   Text="{CompiledBinding State}"
+                   TextWrapping="Wrap"
+                   TextAlignment="Center"
+                   Classes="h3"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center" />
+    </Grid>
 </UserControl>
