@@ -59,8 +59,6 @@ public class TaskListViewModel : ViewModelBase
     desktopServices.NotifyAboutErrorsOf(AddTask);
     desktopServices.NotifyAboutErrorsOf(DeleteTask);
     desktopServices.NotifyAboutErrorsOf(ToggleTaskCompleted);
-
-    LoadTasks.Execute().Catch(Observable.Empty<Unit>()).Subscribe();
     
     this.ValidationRule(
       viewModel => viewModel.NewTaskName,

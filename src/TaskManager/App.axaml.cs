@@ -5,7 +5,6 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using System.Linq;
 using System.Reactive;
-using System.Reactive.Linq;
 using Avalonia.Markup.Xaml;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +16,7 @@ using TaskManager.Presentation.ViewModels;
 using TaskManager.Presentation.Views;
 using TaskManager.Services.TaskRepository;
 using TaskManager.Services.TaskRepository.Ef;
+using TaskManager.Utils;
 
 namespace TaskManager;
 
@@ -70,15 +70,8 @@ public partial class App : Application
       // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
       DisableAvaloniaDataAnnotationValidation();
 
-      var mainVm = host.Services.GetRequiredService<MainWindowViewModel>();
-      var connectionVm = host.Services.GetRequiredService<ConnectionViewModel>();
-      var taskVm = host.Services.GetRequiredService<TaskListViewModel>();
+      var mainVm = GetMainVmAndSetConnectionPipeline(host.Services);
 
-      connectionVm.Connect.Subscribe(_ => mainVm.Content = taskVm);
-      connectionVm.Connect.Execute().Catch(Observable.Empty<Unit>()).Subscribe();
-
-      mainVm.Content = connectionVm;
-      
       desktop.MainWindow = new MainWindow
       {
         DataContext = mainVm,
@@ -86,6 +79,26 @@ public partial class App : Application
     }
 
     base.OnFrameworkInitializationCompleted();
+  }
+
+  private static MainWindowViewModel GetMainVmAndSetConnectionPipeline(IServiceProvider services)
+  {
+    var mainVm = services.GetRequiredService<MainWindowViewModel>();
+    var connectionVm = services.GetRequiredService<ConnectionViewModel>();
+    
+    //TaskListViewModel запрашивается сразу для проверки, что она добавлена в DI-контейнер
+    var taskVm = services.GetRequiredService<TaskListViewModel>();
+
+    connectionVm.Connect.Subscribe(_ =>
+    {
+      taskVm.LoadTasks.ExecuteAndCatchErrors();
+      mainVm.Content = taskVm;
+    });
+      
+    connectionVm.Connect.ExecuteAndCatchErrors();
+
+    mainVm.Content = connectionVm;
+    return mainVm;
   }
 
   private void DisableAvaloniaDataAnnotationValidation()

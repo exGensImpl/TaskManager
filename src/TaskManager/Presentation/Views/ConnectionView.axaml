@@ -12,7 +12,7 @@
                        BusyText="{CompiledBinding State}" 
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"/>
-        <TextBlock IsVisible="{CompiledBinding !Connect.IsExecuting^}"
+        <TextBlock IsVisible="{CompiledBinding Connect.IsExecuting^, Converter={x:Static BoolConverters.Not}}"
                    Text="{CompiledBinding State}"
                    TextWrapping="Wrap"
                    TextAlignment="Center"

@@ -14,7 +14,7 @@
                    BusyText="{x:Static p:Resources.TaskListView_Loading}">
         <DockPanel Margin="20"
                    HorizontalAlignment="Center"
-                   Width="500">
+                   Width="480">
             <TextBlock DockPanel.Dock="Top"
                        HorizontalAlignment="Center"
                        Text="{x:Static p:Resources.TaskListView_Tasks}"
